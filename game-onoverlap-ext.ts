@@ -40,7 +40,7 @@ namespace myGame{
             return
         }
         if(e.indeflectible == false
-            && e.rebound == false && b.damage >= e.damage*2){
+            && e.rebound == false && b.damage > e.damage*2){
             e.setKind(b.kind())
             Bullet.changeDir(e, b, -1)
         }
