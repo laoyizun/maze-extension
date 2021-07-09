@@ -1,0 +1,44 @@
+{
+    "name": "maze-extension",
+    "description": "",
+    "dependencies": {
+        "device": "*",
+        "pxt-status-bar": "github:jwunderl/pxt-status-bar#v0.4.1",
+        "arcade-tilemap-a-star": "github:jwunderl/arcade-tilemap-a-star#v0.3.5"
+    },
+    "files": [
+        "main.blocks",
+        "main.ts",
+        "README.md",
+        "assets.json",
+        "language-ext.ts",
+        "img-anim-ext.ts",
+        "sprite-ext.ts",
+        "projectile-ext.ts",
+        "character-ext.ts",
+        "player-ext.ts",
+        "weapon-ext.ts",
+        "enemy-ext.ts",
+        "mazeRoom-ext.ts",
+        "mazeMonsters-ext.ts",
+        "tilemap.g.jres",
+        "tilemap.g.ts",
+        "game-onoverlap-ext.ts",
+        "game-integrate.ts"
+    ],
+    "testFiles": [
+        "test.ts"
+    ],
+    "targetVersions": {
+        "branch": "v1.4.45",
+        "tag": "v1.4.45",
+        "commits": "https://github.com/microsoft/pxt-arcade/commits/628e717e680e0728902ef3cc43347b23a3cb327b",
+        "target": "1.4.45",
+        "pxt": "6.12.27",
+        "targetId": "arcade"
+    },
+    "supportedTargets": [
+        "arcade"
+    ],
+    "preferredEditor": "tsprj"
+}
