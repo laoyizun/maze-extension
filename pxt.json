@@ -21,14 +21,15 @@
         "enemy-ext.ts",
         "mazeRoom-ext.ts",
         "mazeMonsters-ext.ts",
-        "tilemap.g.jres",
-        "tilemap.g.ts",
         "game-onoverlap-ext.ts",
         "game-integrate.ts"
     ],
     "testFiles": [
-        "test.ts"
+        "test.ts",
+        "tilemap.g.jres",
+        "tilemap.g.ts"
     ],
+    "public": true,
     "targetVersions": {
         "branch": "v1.4.45",
         "tag": "v1.4.45",
