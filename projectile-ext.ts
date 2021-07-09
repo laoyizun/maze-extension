@@ -261,6 +261,7 @@ namespace Bullet{
         sprite.collision = k
         sprite.overlapAct[k-1](sprite, otherSprite)
         sprite.overlapAct[3](sprite, otherSprite)
+        //特殊值-1时不销毁
         if(sprite.perishTogether != -1 && sprite.perishTogether <= v){
             sprite.destroy()
             if((<Character.Character>(sprite.own)).attachBullet != undefined){

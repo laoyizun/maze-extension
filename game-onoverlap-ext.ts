@@ -59,7 +59,7 @@ namespace myGame{
             if(w.attack > 0){
                 hurt(e, w.damage*0.2, w.hitrec)
                 if(w.backoff != 0){
-                    reverseMove(e, w, w.backoff, w.hitrec/1000)
+                    reverseMove(e, w, w.backoff, w.hitrec)
                 }
             }
         })

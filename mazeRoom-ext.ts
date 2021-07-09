@@ -363,8 +363,8 @@ namespace Maze{
     //%weight=99
     export function bornPlaceCR(x: number = 0, y: number = 0){
         curMaze.bornPlace = ()=>{
-            if(Player.getPlayer() != null){
-                tiles.placeOnTile(Player.getPlayer(), tiles.getTileLocation(x, y))
+            if(Bullet.curPlayer != null){
+                tiles.placeOnTile(Bullet.curPlayer, tiles.getTileLocation(x, y))
             }
             for(let s of sprites.allOfKind(SpriteKind.PlayerServant)){
                 tiles.placeOnTile(s, tiles.getTileLocation(x, y))
@@ -470,7 +470,7 @@ namespace Maze{
     //传送到下一迷宫
     function onoverlapPortal(){
         sprites.onOverlap(SpriteKind.Player, SpriteKind.Portal, function(s: Sprite, d: Sprite) {
-            if(s != Player.getPlayer()){
+            if(s != Bullet.curPlayer){
                 return
             }
             portal.setKind(null)

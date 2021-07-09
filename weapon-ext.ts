@@ -198,6 +198,17 @@ namespace Weapon{
         w.passiveSkill.push({time: t*1000, interval: i, skill: skill})
     }
 
+    export enum dirKind{
+        //% block="下"
+        down = 0,
+        //% block="左"
+        left = 1,
+        //% block="上"
+        up = 2,
+        //% block="右"
+        right = 3,
+    }
+
     //%block
     //%blockNamespace=武器 
     //%group="技能设置"
@@ -205,7 +216,7 @@ namespace Weapon{
     //%x.defl=0 y.defl=0
     //%weight=77
     //%inlineInputMode=inline
-    export function setoffset(w: Weapon, dir: Character.dirKind, x: number = 0, y: number = 0){
+    export function setoffset(w: Weapon, dir: dirKind, x: number = 0, y: number = 0){
         w.offset[dir] = {x, y}
     }
 
