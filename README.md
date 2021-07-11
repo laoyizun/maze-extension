@@ -60,7 +60,7 @@ class maze迷宫也需要从mazeRoom-ext.ts中分离出来。
 
 ## 项目模板：
     直接导入项目https://makecode.com/_AsCXpxc1hfTU；
-    不用模板、只导入插件则在项目里添加拓展github:xirishi0/maze-extension；
+    不用模板、只导入插件则在项目里添加拓展 https://github.com/cubicbird/maze-extension
     block里只能看见玩家、初始武器、武器弹射物和迷宫的定义；
     其余武器定义在weapon.ts，敌人定义在enemy.ts，迷宫的怪物组成定义在maze.ts；
     玩家的血量、武器伤害都较低，需要自行调整到合理的数值；
