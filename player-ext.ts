@@ -380,6 +380,8 @@ namespace Player{
         return <Player>b
     }
 
+    let seenWeapons:string[] = []
+
     //------------- 拾取武器 -------------
     function getWeapon(){
         sprites.onOverlap(SpriteKind.Player, SpriteKind.weapon, function (sprite, otherSprite) {
@@ -390,6 +392,14 @@ namespace Player{
             if (player.spareWeapon.length >= player.maxWeapon && otherSprite == player.oldWeapon) {
                 return
             }
+
+            // 本局游戏中首次捡起武器，提示说明
+            let weapon = Weapon.spriteToWeapon(otherSprite)
+            if (seenWeapons.indexOf(weapon.name) == -1) {
+                game.showLongText(weapon.name + "\n by "  + weapon.author + "\n\n" + weapon.desc, DialogLayout.Center)
+                seenWeapons.push(weapon.name)
+            }
+            
             //未持有武器或装备池已满，直接装备武器
             if(player.curWeapon == null || player.spareWeapon.length >= player.maxWeapon){
                 player.oldWeapon = player.curWeapon
@@ -406,9 +416,8 @@ namespace Player{
                     }, 500)
                 }
                 equiWeapon(player, <Weapon.Weapon>otherSprite)
-            } 
-            //放进装备池
-            else{
+            } else{ 
+                //放进装备池
                 pushWeapon(player, <Weapon.Weapon>otherSprite)
             }
         })
