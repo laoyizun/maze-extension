@@ -105,7 +105,7 @@ namespace Weapon{
     //%block
     //%group="自定义武器"
     //%blockNamespace=武器
-    //%blockId=setWeapon block="设置武器%weapon=variables_get(weapon) 作者 %author 介绍文字 %desc"
+    //%blockId=setWeaponDesc block="设置武器%weapon=variables_get(weapon) 作者 %author 介绍文字 %desc"
     //%weight=81
     export function setWeaponDesc(weapon: Weapon, author: string, desc: string) {
         weapon.author = author
