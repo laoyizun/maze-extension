@@ -396,7 +396,7 @@ namespace Player{
             // 本局游戏中首次捡起武器，提示说明
             let weapon = Weapon.spriteToWeapon(otherSprite)
             if (seenWeapons.indexOf(weapon.name) == -1) {
-                game.showLongText(weapon.name + "\n by "  + weapon.author + "\n\n" + weapon.desc, DialogLayout.Center)
+                game.showLongText(weapon.name + "\n by "  + weapon.author + "\n\n" + weapon.desc, DialogLayout.Full)
                 seenWeapons.push(weapon.name)
             }
             
