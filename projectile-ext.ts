@@ -506,7 +506,7 @@ namespace Bullet{
     //% draggableParameters="projectile otherSprite"
     export function bulletOverlap(name: string, kind: overlapKind, func: (projectile: wave, otherSprite: Sprite) => void) {
         
-        overlapFunc.push(()=>{    
+        // overlapFunc.push(()=>{    
             let p = projectiles.v[name]
             if(projectiles.v[name] == undefined){
                 console.log("重叠的弹射物 '"+name+"' 未定义!")
@@ -519,7 +519,7 @@ namespace Bullet{
                 }
             }
             p.bulletoverlap[kind-1] = func
-        })
+        // })
     }
 
     //% blockId=bulletInterval block="每隔%t 秒 持续执行 直到 %p=variables_get(projectile) 消亡" 
