@@ -26,8 +26,8 @@ namespace Bullet{
     //%weight=81
     //%inlineInputMode=inline
     //%draggableParameters="projectile"
-    //% topblock=false
-    //% handlerStatement=true
+    //%topblock=false
+    //%handlerStatement=true
     //%afterOnStart=true
     export function setProjectile(img: Image, name:string, cb:(projectile: wave)=>void){
         Helper.setSprite(projectiles, img, name, cb)
@@ -93,6 +93,18 @@ namespace Bullet{
             bullet.changeImg = false
             shootprism(bullet, a*57.3)
         }
+    }
+
+    //%block
+    //%blockNamespace=弹射物
+    //%group="动作"
+    //%blockId=shootFromSprite block="射击 从 %p=variables_get(sprite) 发射弹射物 %name ||朝向角度 $angle 速率 $velocity 与发射点到距离 $offset 随方向旋转图像%rotateProjectileImage=toggleOnOff"
+    //%a.defl=0 s.defl=50 x.defl=0 y.defl=0 d.defl=0
+    //%weight=99
+    //%inlineInputMode=inline
+    export function shootFromSprite(p: Sprite, name: string, 
+        angle: number = 0, velocity: number = 50, offset: number = 0, rotateProjectileImage: boolean = false){
+            shoot(p, name, p.x, p.y, angle, velocity,offset,rotateProjectileImage)
     }
 
     //------------- 激光 -------------
@@ -505,8 +517,7 @@ namespace Bullet{
     //%afterOnStart=true
     //% draggableParameters="projectile otherSprite"
     export function bulletOverlap(name: string, kind: overlapKind, func: (projectile: wave, otherSprite: Sprite) => void) {
-        
-        // overlapFunc.push(()=>{    
+        overlapFunc.push(()=>{    
             let p = projectiles.v[name]
             if(projectiles.v[name] == undefined){
                 console.log("重叠的弹射物 '"+name+"' 未定义!")
@@ -519,7 +530,7 @@ namespace Bullet{
                 }
             }
             p.bulletoverlap[kind-1] = func
-        // })
+        })
     }
 
     //% blockId=bulletInterval block="每隔%t 秒 持续执行 直到 %p=variables_get(projectile) 消亡" 
