@@ -95,6 +95,18 @@ namespace Bullet{
         }
     }
 
+    //%block
+    //%blockNamespace=弹射物
+    //%group="动作"
+    //%blockId=shootFromSprite block="射击 从 %p=variables_get(sprite) 发射弹射物 %name ||朝向角度 $angle 速率 $velocity 与发射点到距离 $offset 随方向旋转图像%rotateProjectileImage=toggleOnOff"
+    //%a.defl=0 s.defl=50 x.defl=0 y.defl=0 d.defl=0
+    //%weight=99
+    //%inlineInputMode=inline
+    export function shootFromSprite(p: Sprite, name: string, 
+        angle: number = 0, velocity: number = 50, offset: number = 0, rotateProjectileImage: boolean = false){
+            shoot(p, name, p.x, p.y, angle, velocity,offset,rotateProjectileImage)
+    }
+
     //------------- 激光 -------------
 
     function drawPrism(line: Image, c: number, angle: number, width: number,
