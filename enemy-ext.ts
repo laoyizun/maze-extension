@@ -253,7 +253,7 @@ namespace Enemy{
     //%block
     //%blockNamespace=敌人
     //%group="敌人属性"
-    //%blockId=enemySetEnemyAttr block="设置敌人 %s=variables_get(enemy) %attrName 的属性为 %attrValue"
+    //%blockId=enemySetEnemyAttr block="设置敌人 %enemy=variables_get(enemy) %attrName 的属性为 %attrValue"
     export function setEnemyAttr(enemy:Enemy, attrName:string, attrValue:number) {
         sprites.setDataNumber(enemy, attrName, attrValue)
     }
@@ -261,7 +261,7 @@ namespace Enemy{
     //%block
     //%blockNamespace=敌人
     //%group="敌人属性"
-    //%blockId=enemyGetEnemyAttr block="敌人 %s=variables_get(enemy) 的 %attrName 属性值"
+    //%blockId=enemyGetEnemyAttr block="敌人 %enemy=variables_get(enemy) 的 %attrName 属性值"
     export function getEnemyAttr(enemy:Enemy, attrName:string) :number {
         let ret = sprites.readDataNumber(enemy, attrName)
         if (ret == undefined) {
@@ -273,9 +273,8 @@ namespace Enemy{
     //%block
     //%blockNamespace=敌人
     //%group="敌人属性"
-    //%blockId=enemyChangeEnemyAttrBy block="以 %incr 为幅度更改敌人 %s=variables_get(enemy) 的 %attrName 属性值"
-    export function changeEnemyAttrBy(enemy:Enemy, attrName:string, incr:number) {
+    //%blockId=enemyChangeEnemyAttrBy block="以 $incr 为幅度更改敌人 $enemy=variables_get 的 $attrName 属性值"
+    export function changeEnemyAttrBy(enemy:Enemy, attrName:string="", incr:number=1) {
         sprites.changeDataNumberBy(enemy, attrName, incr)
     }
-
 }
