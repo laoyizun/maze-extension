@@ -26,8 +26,8 @@ namespace Bullet{
     //%weight=81
     //%inlineInputMode=inline
     //%draggableParameters="projectile"
-    //% topblock=false
-    //% handlerStatement=true
+    //%topblock=false
+    //%handlerStatement=true
     //%afterOnStart=true
     export function setProjectile(img: Image, name:string, cb:(projectile: wave)=>void){
         Helper.setSprite(projectiles, img, name, cb)
@@ -505,8 +505,7 @@ namespace Bullet{
     //%afterOnStart=true
     //% draggableParameters="projectile otherSprite"
     export function bulletOverlap(name: string, kind: overlapKind, func: (projectile: wave, otherSprite: Sprite) => void) {
-        
-        // overlapFunc.push(()=>{    
+        overlapFunc.push(()=>{    
             let p = projectiles.v[name]
             if(projectiles.v[name] == undefined){
                 console.log("重叠的弹射物 '"+name+"' 未定义!")
@@ -519,7 +518,7 @@ namespace Bullet{
                 }
             }
             p.bulletoverlap[kind-1] = func
-        // })
+        })
     }
 
     //% blockId=bulletInterval block="每隔%t 秒 持续执行 直到 %p=variables_get(projectile) 消亡" 
