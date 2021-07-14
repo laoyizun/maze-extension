@@ -27,11 +27,12 @@ namespace Character{
         c.hitrecclock = -1
         c.hp = 100
         c.def = 100/c.hp
-        c.hpbar = statusbars.create(20, 4, StatusBarKind.Health)
+        c.hpbar = statusbars.create(20, 3, StatusBarKind.Health)
+        c.hpbar.positionDirection(CollisionDirection.Bottom)
         c.hpbar.attachToSprite(c)
         c.hpbar.setColor(2, 13)
         c.hpbar.setBarBorder(1, 11)
-        c.hpbar.setOffsetPadding(0, 2)
+        c.hpbar.setOffsetPadding(0, 1)
     }
 
     export enum animKind{
