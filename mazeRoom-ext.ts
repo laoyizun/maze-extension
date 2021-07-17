@@ -52,7 +52,6 @@ namespace Maze{
     
     //进入新房间
     let floor = 0
-    info.setScore(0)
     //%block
     //%blockNamespace=迷宫
     //%group="生成迷宫"
