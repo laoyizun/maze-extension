@@ -57,7 +57,7 @@ namespace Maze{
     //%block
     //%blockNamespace=迷宫
     //%group="自定义迷宫"
-    //%blockId=setMaze block="设置作者 %author 介绍 %description"
+    //%blockId=setMazeInfo block="设置作者 %author 介绍 %description"
     export function setMazeInfo(author:string, description:string) {
         curMaze.author = author
         curMaze.description = description
