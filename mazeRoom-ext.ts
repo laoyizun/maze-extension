@@ -15,7 +15,11 @@ namespace Maze{
         k: number //装备idx
         creatMaze: ()=>void //第一次放置迷宫时初始化
         bornPlace: ()=>void //初始位置
-        constructor(tilemap: tiles.TileMapData, f: ()=>void){
+        name:string //迷宫名称
+        author :string //作者
+        description :string //描述
+        constructor(name:string, tilemap: tiles.TileMapData, f: ()=>void){
+            this.name = name
             this.map = tilemap
             this.monsters = []
             this.i = this.j = this.k = 0
@@ -40,7 +44,7 @@ namespace Maze{
     //%weight=99
     //%inlineInputMode=inline
     export function setMaze(tilemap: tiles.TileMapData, name: string, f: ()=>void){
-        curMaze = new maze(tilemap, f)
+        curMaze = new maze(name, tilemap, f)
         mazes.push(curMaze)
         if(IntegrateGame.mazeList[name] != undefined){
             console.log("定义迷宫房间时发生命名冲突："+name)
@@ -49,16 +53,34 @@ namespace Maze{
         IntegrateGame.mazeList[name] = curMaze
         //f()
     }
-    
+
+    //%block
+    //%blockNamespace=迷宫
+    //%group="自定义迷宫"
+    //%blockId=setMaze block="设置作者 %author 介绍 %description"
+    export function setMazeInfo(author:string, description:string) {
+        curMaze.author = author
+        curMaze.description = description
+    }
+
     //进入新房间
     let floor = 0
+
+    let seenMazes:string[] = []
+
+
     //%block
     //%blockNamespace=迷宫
     //%group="生成迷宫"
     //%blockId=newRandomMaze block="随机放置迷宫房间"
     //%weight=99
     export function newRandomMaze(blank: string=null){
-        newMaze(mazes[randint(0, mazes.length-1)])
+        newMaze(mazes[randint(0, mazes.length - 1)])
+        let currentMazeName = Maze.curMaze.name
+        if (seenMazes.indexOf(currentMazeName) == -1) {
+            game.showLongText(currentMazeName + "\n by " + Maze.curMaze.author + "\n\n" + Maze.curMaze.description, DialogLayout.Full)
+            seenMazes.push(currentMazeName)
+        }
     }
 
     //%block
@@ -84,9 +106,6 @@ namespace Maze{
             curMaze.creatMaze = null
         }
         tiles.setTilemap(curMaze.map)
-        //if(Player.curPlayer != undefined){
-        //    Player.curPlayer.setPosition(randint(40, 80), randint(40, 80))
-        //}
         info.setScore(++floor)
         curMaze.bornPlace()
         createMonsters()
@@ -152,7 +171,7 @@ namespace Maze{
     export function mapHeight(){
         return Maze.curMaze.map.height
     }
-    
+
     //------------- 坐标转行列 -------------
     export function toCR(x_y: number){
         return x_y>>curMaze.map.scale
@@ -258,7 +277,7 @@ namespace Maze{
             setTimeout(function() {
                 if(!flag){
                     createMonsters()
-                }  
+                }
             }, t+1)
         }
         else{
@@ -370,7 +389,7 @@ namespace Maze{
             }
         }
     }
-    
+
     //%block
     //%blockNamespace=迷宫
     //%group="放置迷宫物体"
@@ -401,7 +420,7 @@ namespace Maze{
                 tiles.placeOnTile(portal, tiles.getTileLocation(x, y))
                 portal.setKind(SpriteKind.Portal)
                 portalclock = setInterval(function() {
-                    Helper.runAnimationAt("传送门", portal.x, portal.y) 
+                    Helper.runAnimationAt("传送门", portal.x, portal.y)
                 }, 300)
             }
         }
@@ -439,7 +458,7 @@ namespace Maze{
                 tiles.placeOnRandomTile(portal, tile)
                 portal.setKind(SpriteKind.Portal)
                 portalclock = setInterval(function() {
-                    Helper.runAnimationAt("传送门", portal.x, portal.y) 
+                    Helper.runAnimationAt("传送门", portal.x, portal.y)
                 }, 300)
             }
         }
@@ -482,7 +501,7 @@ namespace Maze{
             }, 300)
         })
     }
-    
+
     onoverlapPortal()
 
 }
