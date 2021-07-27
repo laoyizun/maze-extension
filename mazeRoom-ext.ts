@@ -78,13 +78,6 @@ namespace Maze{
     //%weight=99
     export function newRandomMaze(blank: string=null){
         let targetMaze = mazes[randint(0, mazes.length - 1)];
-        let currentMazeName = targetMaze.name
-
-        if (seenMazes.indexOf(currentMazeName) == -1) {
-            game.showLongText(currentMazeName + "\n by " + targetMaze.author + "\n\n" + targetMaze.description, DialogLayout.Full)
-            seenMazes.push(currentMazeName)
-        }
-
         newMaze(targetMaze)
     }
 
@@ -109,6 +102,15 @@ namespace Maze{
             curMaze.creatMaze()
             curMaze.i = curMaze.k = 0
             curMaze.creatMaze = null
+
+            // show info on first encounter
+            let currentMazeName = curMaze.name
+
+            if (seenMazes.indexOf(currentMazeName) == -1) {
+                game.showLongText(currentMazeName + "\n by " + curMaze.author
+                    + "\n\n" + curMaze.description, DialogLayout.Full)
+                seenMazes.push(currentMazeName)
+            }
         }
         tiles.setTilemap(curMaze.map)
         info.setScore(++floor)
