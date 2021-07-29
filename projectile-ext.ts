@@ -3,12 +3,14 @@ namespace 弹射物{}
 namespace Bullet{
 //================== 拓展弹射物 ==================
     //------------- 弹射物注册/定义 -------------
+
     let projectiles = new Helper.mysprites(Helper.extSpriteKind.Projectile)
+    Helper.CUSTOM_SPRITE_KIND_INITIALIZER[<number>Helper.extSpriteKind.Projectile] = (img:Image)=>{return new Bullet.wave(img)}
     let overlapFunc: (()=>void)[] = []
 
     //%block
     //%group="自定义弹射物"
-    //%blockNamespace=弹射物 
+    //%blockNamespace=弹射物
     //%blockId=setProjectiles block="自定义弹射物集合 标记名为%name"
     //%weight=100
     //%afterOnStart=true
@@ -21,7 +23,7 @@ namespace Bullet{
 
     //%block
     //%group="自定义弹射物"
-    //%blockNamespace=弹射物 
+    //%blockNamespace=弹射物
     //%blockId=setProjectile block="设置弹射物 %img=screen_image_picker 命名为%name"
     //%weight=81
     //%inlineInputMode=inline
@@ -43,6 +45,14 @@ namespace Bullet{
         return name
     }
 
+    function _createProjectileSprite(name:string, img: Image) {
+        let sprite = new Bullet.wave(img)
+        Helper.createSprite(projectiles, name, 0, 0)
+        sprite.flags |= sprites.Flag.AutoDestroy | sprites.Flag.DestroyOnWall;
+        return sprite
+    }
+
+
     //------------- 射击 -------------
     //%block
     //%blockNamespace=弹射物
@@ -51,7 +61,7 @@ namespace Bullet{
     //%a.defl=0 s.defl=50 x.defl=0 y.defl=0 d.defl=0
     //%weight=99
     //%inlineInputMode=inline
-    export function shoot(p: Sprite, name: string, x: number, y: number, 
+    export function shoot(p: Sprite, name: string, x: number, y: number,
         a: number = 0, s: number = 50, d: number = 0, f: boolean = false){
         let bullet: Bullet.wave
         let b = projectiles.v[name]
@@ -59,7 +69,7 @@ namespace Bullet{
             console.log("发射的弹射物 '"+name+"' 未定义!")
             return
         }
-        bullet = <Bullet.wave>sprites.createProjectileFromSide(b.img.clone(), 0, 0)
+        bullet = _createProjectileSprite(name, b.img.clone());
         reset(p, bullet)
         if(b.bulletoverlap != undefined){
             bullet.overlapAct = b.bulletoverlap
@@ -102,7 +112,7 @@ namespace Bullet{
     //%a.defl=0 s.defl=50 x.defl=0 y.defl=0 d.defl=0
     //%weight=99
     //%inlineInputMode=inline
-    export function shootFromSprite(p: Sprite, name: string, 
+    export function shootFromSprite(p: Sprite, name: string,
         angle: number = 0, velocity: number = 50, offset: number = 0, rotateProjectileImage: boolean = false){
             shoot(p, name, p.x, p.y, angle, velocity,offset,rotateProjectileImage)
     }
@@ -121,13 +131,13 @@ namespace Bullet{
             const sint = Math.sin(angle)
             const cost = Math.cos(angle)
             do{
-                boldLine(l-radius*sint, l+radius*cost, 
+                boldLine(l-radius*sint, l+radius*cost,
                             l+l*cost-radius*sint, l+l*sint+radius*cost)
                 radius = -radius
             }while(radius < 0)
-            line.drawLine(l-radius*sint, l+radius*cost, 
+            line.drawLine(l-radius*sint, l+radius*cost,
                           l+radius*sint, l-radius*cost, color)
-            line.drawLine(l+l*cost-radius*sint, l+l*sint+radius*cost, 
+            line.drawLine(l+l*cost-radius*sint, l+l*sint+radius*cost,
                           l+l*cost+radius*sint, l+l*sint-radius*cost, color)
             let centx0 = (l-radius*sint + l+l*cost+radius*sint)>>1
             let centy0 = (l+radius*cost + l+l*sint-radius*cost)>>1
@@ -162,7 +172,7 @@ namespace Bullet{
             //上下找种子
             for(let i = -1; i < 2; i+=2){
                 function unfilled(x0: number, y0: number){
-                    return line.getPixel(x0, y0) != color 
+                    return line.getPixel(x0, y0) != color
                         && line.getPixel(x0, y0) != centColor
                 }
                 const y0 = y+i
@@ -181,7 +191,7 @@ namespace Bullet{
     }
 
     function shootprism(b: wave, a: number){
-        a = a%360 
+        a = a%360
         b.setVelocity(0, 0)
         let line = image.create(b.prismLength*2, b.prismLength*2)
         let x = b.x
@@ -217,8 +227,8 @@ namespace Bullet{
         rightImg: Image //右方向图像
     }
 
-    export function reset(owner: Sprite, bullet: wave, damage = 0, hitrec = 100, hurted = 1, 
-    backoff = 0, rebound = false, 
+    export function reset(owner: Sprite, bullet: wave, damage = 0, hitrec = 100, hurted = 1,
+    backoff = 0, rebound = false,
     indeflectible = false, perishTogether = 1){
         bullet.own = owner
         bullet.damage = damage //伤害
@@ -321,7 +331,7 @@ namespace Bullet{
 
     //%block
     //%group="属性"
-    //%blockNamespace=弹射物 
+    //%blockNamespace=弹射物
     //%blockId=setBullet block="设置弹射物%b=variables_get(projectile) 属性 %k=bulletP 为 %v"
     //%v.defl=0
     //%weight=78
@@ -342,7 +352,7 @@ namespace Bullet{
 
     //%block
     //%group="属性"
-    //%blockNamespace=弹射物 
+    //%blockNamespace=弹射物
     //%blockId=setPrismLW block="设置激光弹射物%b=variables_get(projectile) 长%l 宽%w 持续时间%t ms"
     //%l.defl=100 w.defl=3 t.defl=1000
     //%weight=77
@@ -355,7 +365,7 @@ namespace Bullet{
 
     //%block
     //%group="属性"
-    //%blockNamespace=弹射物 
+    //%blockNamespace=弹射物
     //%blockId=setPrismColor block="设置激光弹射物%b=variables_get(projectile) 边界颜色%bc=colorindexpicker 中心颜色%cc=colorindexpicker"
     //%weight=76
     export function setPrismColor(b:wave, bc: number, cc: number){
@@ -365,7 +375,7 @@ namespace Bullet{
 
     //%block
     //%group="属性"
-    //%blockNamespace=弹射物 
+    //%blockNamespace=弹射物
     //%blockId=setBullet2 block="设置弹射物%b=variables_get(projectile) 特性 %k=bulletP2 为 %v=toggleOnOff"
     //%v.defl=true
     //%weight=78
@@ -386,7 +396,7 @@ namespace Bullet{
 
     //%block
     //%group="参数"
-    //%blockNamespace=弹射物 
+    //%blockNamespace=弹射物
     //%blockId=getBulletV2 block="弹射物%b=variables_get(projectile)的特性 %k=bulletP2"
     //%v.defl=true
     export function getBulletV2(b:wave, k: bulletP2){
@@ -404,7 +414,7 @@ namespace Bullet{
 
     //%block
     //%group="参数"
-    //%blockNamespace=弹射物 
+    //%blockNamespace=弹射物
     //%blockId=getBulletV block="弹射物%b=variables_get(projectile)的属性 %k=bulletP"
     export function getBulletV(b:wave, k: bulletP){
         if(k == bulletP.damage){
@@ -424,7 +434,7 @@ namespace Bullet{
 
     //%block
     //%group="参数"
-    //%blockNamespace=弹射物 
+    //%blockNamespace=弹射物
     //%blockId=bulletOwn block="弹射物%b=variables_get(projectile)的发射者"
     //%weight=78
     export function bulletOwn(b: wave){
@@ -433,7 +443,7 @@ namespace Bullet{
 
     //%block
     //%group="参数"
-    //%blockNamespace=弹射物 
+    //%blockNamespace=弹射物
     //%blockId=spriteToBullet block="将精灵%b=variables_get(sprite)强制转换为弹射物"
     //%weight=99
     export function spriteToBullet(b: Sprite){
@@ -442,14 +452,14 @@ namespace Bullet{
 
     //%block
     //%group="特殊效果"
-    //%blockNamespace=弹射物 
+    //%blockNamespace=弹射物
     //%blockId=splitshoot block="(空爆) %p=variables_get(projectile) 射出 弹射物%name || 偏移x %x y %y朝向角度 $a 速率 $s 与发射点到距离 $d 随方向旋转图像%f=toggleOnOff"
     //%a.defl=0 x.defl=0 y.defl=0 s.defl=50 d.defl=0
     //%weight=78
     //%inlineInputMode=inline
     //% topblock=false
     //% handlerStatement=true
-    export function splitshoot(p: wave, name: string, x: number = 0, y: number = 0,  
+    export function splitshoot(p: wave, name: string, x: number = 0, y: number = 0,
         a: number = 0, s: number = 50, d: number = 0, f: boolean = false){
         if(!Helper.isDestroyed(p)){
             let bullet: Bullet.wave
@@ -458,7 +468,7 @@ namespace Bullet{
                 console.log("空爆的弹射物 '"+name+"' 未定义!")
                 return
             }
-            bullet = <Bullet.wave>sprites.createProjectileFromSide(b.img.clone(), 0, 0)
+            bullet = _createProjectileSprite(name, b.img.clone())
             reset(p, bullet)
             a = (a+90*p.dir+90)/57.3
             bullet.changeImg = f
@@ -477,7 +487,7 @@ namespace Bullet{
 
     //%block
     //%group="特殊效果"
-    //%blockNamespace=弹射物 
+    //%blockNamespace=弹射物
     //%blockId=tailshoot block="(尾焰) %p=variables_get(projectile) 每隔%t ms 产生动画 %anim"
     //%t.defl=100
     //%weight=77
@@ -510,14 +520,14 @@ namespace Bullet{
     }
 
     //%block
-    //% blockId=bulletOverlap block="当弹射物%name $projectile 与%kind $otherSprite 重叠时" 
+    //% blockId=bulletOverlap block="当弹射物%name $projectile 与%kind $otherSprite 重叠时"
     //% group="特殊效果"
-    //% blockNamespace=弹射物 
+    //% blockNamespace=弹射物
     //% weight=99
     //%afterOnStart=true
     //% draggableParameters="projectile otherSprite"
     export function bulletOverlap(name: string, kind: overlapKind, func: (projectile: wave, otherSprite: Sprite) => void) {
-        overlapFunc.push(()=>{    
+        overlapFunc.push(()=>{
             let p = projectiles.v[name]
             if(projectiles.v[name] == undefined){
                 console.log("重叠的弹射物 '"+name+"' 未定义!")
@@ -533,10 +543,10 @@ namespace Bullet{
         })
     }
 
-    //% blockId=bulletInterval block="每隔%t 秒 持续执行 直到 %p=variables_get(projectile) 消亡" 
+    //% blockId=bulletInterval block="每隔%t 秒 持续执行 直到 %p=variables_get(projectile) 消亡"
     //% topblock=false
     //% group="特殊效果"
-    //%blockNamespace=弹射物 
+    //%blockNamespace=弹射物
     //% handlerStatement=true
     //% draggableParameters="reporter"
     //% weight=75
@@ -554,7 +564,7 @@ namespace Bullet{
 
     //%block
     //%group="特殊效果"
-    //%blockNamespace=弹射物 
+    //%blockNamespace=弹射物
     //%blockId=setBlastAnim block="设定 %sprite=variables_get(projectile) 爆炸动画 %anim"
     //%inlineInputMode=inline
     //%interval.defl=100
@@ -569,11 +579,11 @@ namespace Bullet{
         //% block="逆"
         n
     }
-    
+
 
     //%block
     //%group="行为/轨迹"
-    //%blockNamespace=弹射物 
+    //%blockNamespace=弹射物
     //%blockId=turnTo block="偏移 %p=variables_get(projectile) 转向角度 %angle ||速率%v"
     //%angle.defl=0 v.defl=1146
     //%inlineInputMode=inline
@@ -598,7 +608,7 @@ namespace Bullet{
 
     //%block
     //%group="行为/轨迹"
-    //%blockNamespace=弹射物 
+    //%blockNamespace=弹射物
     //%blockId=stopcircular block="停止转圈 %p=variables_get(projectile)"
     export function stopcircular(sprite: Sprite){
         clearInterval((<wave>sprite).circlock);
@@ -607,11 +617,11 @@ namespace Bullet{
 
     //%block
     //%group="行为/轨迹"
-    //%blockNamespace=弹射物 
+    //%blockNamespace=弹射物
     //%blockId=circular block="转圈 %p=variables_get(projectile) ||半径%r 半径递增速率%v %t 时针 偏移速率%ov 偏移角度%oa"
     //%r.defl=30 v=0 t.defl=clockwise.p ov.defl=0 oa.defl=180
     //%inlineInputMode=inline
-    export function circular(sprite: Sprite, r: number = 30, v: number = 0, 
+    export function circular(sprite: Sprite, r: number = 30, v: number = 0,
     t: clockwise = clockwise.p, ov: number = 0, oa: number = 180){
         let speed = Math.max(Math.sqrt(sprite.vx*sprite.vx+sprite.vy*sprite.vy), 10)
         let angle0 = Math.atan2(sprite.vy, sprite.vx)
@@ -646,7 +656,7 @@ namespace Bullet{
 
     //%block
     //%group="行为/轨迹"
-    //%blockNamespace=弹射物 
+    //%blockNamespace=弹射物
     //%blockId=movetoxy block="移动 %sprite=variables_get(projectile) 在%time 秒内接近 位置x %desx y %desy"
     //%inlineInputMode=inline
     export function movetoxy (sprite: Sprite, time: number, desx: number, desy: number) {
@@ -656,7 +666,7 @@ namespace Bullet{
 
     //%block
     //%group="行为/轨迹"
-    //%blockNamespace=弹射物 
+    //%blockNamespace=弹射物
     //%blockId=movetox block="移动 %sprite=variables_get(projectile) 在%time 秒内接近 位置x %desx"
     //%inlineInputMode=inline
     export function movetox (sprite: Sprite, time: number, desx: number) {
@@ -677,7 +687,7 @@ namespace Bullet{
 
     //%block
     //%group="行为/轨迹"
-    //%blockNamespace=弹射物 
+    //%blockNamespace=弹射物
     //%blockId=movetoy block="移动 %sprite=variables_get(projectile) 在%time 秒内接近 位置y %desy"
     //%inlineInputMode=inline
     export function movetoy (sprite: Sprite, time: number, desy: number) {
@@ -698,7 +708,7 @@ namespace Bullet{
 
     //%block
     //%group="行为/轨迹"
-    //%blockNamespace=弹射物 
+    //%blockNamespace=弹射物
     //%blockId=movexy block="移动 %sprite=variables_get(projectile) 在%time 秒内移动 x %dx y %dy"
     //%inlineInputMode=inline
     export function movexy (sprite: Sprite, time: number, dx: number, dy: number) {
@@ -712,7 +722,7 @@ namespace Bullet{
 
     //%block
     //%group="行为/轨迹"
-    //%blockNamespace=弹射物 
+    //%blockNamespace=弹射物
     //%blockId=accelerateToV block="加速 %sprite=variables_get(projectile) 在%time 秒内加速 vx* %dx 倍 vy* %dy 倍"
     //%inlineInputMode=inline
     export function acceToV (sprite: Sprite, time: number, vx: number, vy: number) {
@@ -751,7 +761,7 @@ namespace Bullet{
 
     //%block
     //%group="行为/轨迹"
-    //%blockNamespace=弹射物 
+    //%blockNamespace=弹射物
     //%blockId=aimedshot2 block="(自机狙) %bullet=variables_get(projectile) 跟踪最近的敌人 ||最大范围 %d 跟踪间隔 %t 命中后继续跟随 %c=toggleOnOff"
     //%inlineInputMode=inline
     //%d.defl=100 t.defl=100
@@ -784,7 +794,7 @@ namespace Bullet{
 
     //%block
     //%group="行为/轨迹"
-    //%blockNamespace=弹射物 
+    //%blockNamespace=弹射物
     //%blockId=aimedshot block="(自机狙) %bullet=variables_get(projectile) 转向最近的敌人 ||最大范围 %d"
     //%inlineInputMode=inline
     //%d.defl=100
@@ -808,9 +818,9 @@ namespace Bullet{
     }
 
 
-    //% blockId=setHp block="修改%s=variables_get(character)的HP 以%d" 
+    //% blockId=setHp block="修改%s=variables_get(character)的HP 以%d"
     //% group="特殊效果"
-    //%blockNamespace=弹射物 
+    //%blockNamespace=弹射物
     //% d.defl=-1
     //% weight=99
     export function setHp(s: Sprite, d: number){
