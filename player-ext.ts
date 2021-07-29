@@ -252,7 +252,7 @@ namespace Player{
     export function setPlayer(img: Image, name:string, cb:(player: Player)=>void){
         if(players == undefined){
             players = new Helper.mysprites(playerKey, IntegrateGame.defExtSprite[playerKey])
-            Helper.CUSTOM_SPRITE_KIND_INITIALIZER[playerKey] = Player
+            Helper.CUSTOM_SPRITE_KIND_INITIALIZER[<number>playerKey] = (img:Image)=>{return new Player(img)}
         }
         Helper.setSprite(players, img, name, cb)
         IntegrateGame.defExtSprite[playerKey][name] = players.v[name]

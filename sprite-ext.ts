@@ -33,7 +33,7 @@ namespace Helper{
 
     const spriteKind = ["玩家","敌人","武器","弹射物"]
 
-    export const CUSTOM_SPRITE_KIND_INITIALIZER :{[k:number]:any} = {}
+    export const CUSTOM_SPRITE_KIND_INITIALIZER :((img:Image)=>Sprite)[] = []
 
     export enum extSpriteKind{
         Player = 0,
@@ -52,7 +52,12 @@ namespace Helper{
     }
 
     function newInstanceOf(customSpriteKind:mysprites, img:Image) :Sprite  {
-        return new CUSTOM_SPRITE_KIND_INITIALIZER[customSpriteKind.k](img)
+        let customSpriteFactoryMethod = CUSTOM_SPRITE_KIND_INITIALIZER[customSpriteKind.k];
+        if (customSpriteFactoryMethod == undefined) {
+            console.log("customSpriteKind" + customSpriteKind.k + " sprite factory method is not registered.")
+            return null;
+        }
+        return customSpriteFactoryMethod(img)
     }
 
 
@@ -76,7 +81,7 @@ namespace Helper{
             return null
         }
         // let sprite = sprites.create(w.img.clone())
-        let sprite = _createSprite(kind, w.img)
+        let sprite = _createSprite(kind, w.img.clone())
         tiles.placeOnTile(sprite, tiles.getTileLocation(x, y))
         return sprite
     }
