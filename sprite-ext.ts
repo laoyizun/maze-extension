@@ -12,12 +12,12 @@ namespace Helper{
         cb: (sprite: Sprite)=>void //定义
         bulletoverlap: ((s: Sprite, o: Sprite)=>void)[] //与弹射物的碰撞行为
         constructor(img: Image, cb: (sprite: Sprite)=>void){
-            this.img = img 
+            this.img = img
             this.cb = cb
         }
     }
 
-    export class mysprites{ 
+    export class mysprites{
         k: number //拓展精灵类型："玩家"、"敌人"、"武器"、"弹射物"
         v: {[key: string]: mySprite; } = {}
         constructor(k: extSpriteKind, v: {[key: string]: mySprite; } = null){
@@ -32,6 +32,8 @@ namespace Helper{
     }
 
     const spriteKind = ["玩家","敌人","武器","弹射物"]
+
+    export const CUSTOM_SPRITE_KIND_INITIALIZER :{[k:number]:any} = {}
 
     export enum extSpriteKind{
         Player = 0,
@@ -49,13 +51,32 @@ namespace Helper{
         kind.v[name] = sprite
     }
 
+    function newInstanceOf(customSpriteKind:mysprites, img:Image) :Sprite  {
+        return new CUSTOM_SPRITE_KIND_INITIALIZER[customSpriteKind.k](img)
+    }
+
+
+    function _createSprite(customSpriteKind:mysprites, img:Image, spriteKind?:number) {
+        const scene = game.currentScene();
+        const sprite = newInstanceOf(customSpriteKind, img)
+        scene.physicsEngine.addSprite(sprite);
+
+        // run on created handlers
+        scene.createdHandlers
+            .filter(h => h.kind == spriteKind)
+            .forEach(h => h.handler(sprite));
+
+        return sprite
+    }
+
     export function createSprite(kind: mysprites, name: string, x: number, y: number){
         let w = kind.v[name]
         if(w == undefined){
             console.log("创建的"+spriteKind[kind.k]+"'"+ name + "' 未定义!")
             return null
         }
-        let sprite = sprites.create(w.img.clone())
+        // let sprite = sprites.create(w.img.clone())
+        let sprite = _createSprite(kind, w.img)
         tiles.placeOnTile(sprite, tiles.getTileLocation(x, y))
         return sprite
     }

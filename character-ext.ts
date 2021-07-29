@@ -13,6 +13,9 @@ namespace Character{
         hurted: number //受伤状态
         hitrecclock: number //硬直时钟
         attachBullet: Sprite[] //与发射者关联的弹射物(只需要判断精灵是否销毁、不需要拓展弹射物的属性
+        constructor(img:Image) {
+            super(img)
+        }
     }
 
     export function reset(c: Character){
