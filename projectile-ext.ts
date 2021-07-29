@@ -46,8 +46,7 @@ namespace Bullet{
     }
 
     function _createProjectileSprite(name:string, img: Image) {
-        let sprite = new Bullet.wave(img)
-        Helper.createSprite(projectiles, name, 0, 0)
+        let sprite = <Bullet.wave>Helper.createSprite(projectiles, name, 0, 0)
         sprite.flags |= sprites.Flag.AutoDestroy | sprites.Flag.DestroyOnWall;
         return sprite
     }
@@ -225,6 +224,26 @@ namespace Bullet{
         attachOwner = false //所有者被攻击时自动销毁
         blastAnim: string //爆炸(销毁)动画
         rightImg: Image //右方向图像
+        constructor(img:Image) {
+            super(img)
+            this.damage = 1 //伤害
+            this.hitrec = 100 //被攻击方硬直时间
+            this.backoff = 0 //击退的距离
+            this.rebound = false //反射敌方子弹
+            this.indeflectible = false //不受反射
+            this.perishTogether = 0 //碰撞存活优先级. -1~99, -1时碰撞双方都不会销毁
+            this.collision = 1 //上次碰撞类型：0=>未碰撞/超时重制, 1=>子弹碰子弹, 2=>子弹碰人, 3=>子弹碰武器
+            this.interval = -1 //碰撞后不消亡使用的时钟
+            this.circlock = -1 //转圈时钟
+            this.overlapAct = [] //碰撞后的行为
+            this.dir = 2 //朝向.0:下，1:左，2:上，3:右
+            this.changeImg = false //图像随方向变化
+            this.prism = false //激光
+            this.prismLength = 100 //激光长度
+            this.prismWidth = 3 //激光宽度
+            this.prismColor = 2 //激光边界颜色
+            this.prismCentColor = 1 //激光中心颜色
+        }
     }
 
     export function reset(owner: Sprite, bullet: wave, damage = 0, hitrec = 100, hurted = 1,
