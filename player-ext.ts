@@ -11,10 +11,6 @@ namespace Player{
         curFollow: number //当前持有武器的跟随器
         clearOldWeapon: number //清除被丢弃的武器
         deflWeapon: string //默认武器
-
-        constructor(img:Image) {
-            super(img)
-        }
     }
     const dirORmask = [8, 4, 2, 1]
     const dirANDmask = [7, 11, 13, 14]

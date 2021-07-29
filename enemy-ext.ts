@@ -86,6 +86,7 @@ namespace Enemy{
     export function setEnemy(img: Image, name:string, cb:(enemy: Enemy)=>void){
         if(enemys == undefined){
             enemys = new Helper.mysprites(enemyKey, IntegrateGame.defExtSprite[enemyKey])
+            Helper.CUSTOM_SPRITE_KIND_INITIALIZER[<number>enemyKey] = (img:Image)=>{return new Enemy(img)}
         }
         Helper.setSprite(enemys, img, name, cb)
         IntegrateGame.defExtSprite[enemyKey][name] = enemys.v[name]
