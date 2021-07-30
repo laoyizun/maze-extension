@@ -84,6 +84,7 @@ namespace Weapon{
     export function setWeapon(img: Image, name:string, cb:(weapon: Weapon)=>void){
         if(weapons == undefined){
             weapons = new Helper.mysprites(weaponKey, IntegrateGame.defExtSprite[weaponKey])
+            Helper.CUSTOM_SPRITE_KIND_INITIALIZER[<number>weaponKey] = (img:Image)=>{return new Weapon(img)}
         }
         Helper.setSprite(weapons, img, name, cb)
         IntegrateGame.defExtSprite[weaponKey][name] = weapons.v[name]

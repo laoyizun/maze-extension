@@ -15,6 +15,7 @@ namespace Player{
     const dirORmask = [8, 4, 2, 1]
     const dirANDmask = [7, 11, 13, 14]
 
+
     function reset(p: Player){
         Character.reset(p)
         p.walk = 0
@@ -234,11 +235,12 @@ namespace Player{
 
     //------------- 玩家注册/定义 -------------
     const playerKey = Helper.extSpriteKind.Player
-    let players: Helper.mysprites 
+    let players: Helper.mysprites
+
 
     //%block
     //%group="自定义玩家"
-    //%blockNamespace=玩家 
+    //%blockNamespace=玩家
     //%blockId=setPlayer block="设置玩家 %img=screen_image_picker 命名为%name"
     //%weight=81
     //%inlineInputMode=inline
@@ -246,6 +248,7 @@ namespace Player{
     export function setPlayer(img: Image, name:string, cb:(player: Player)=>void){
         if(players == undefined){
             players = new Helper.mysprites(playerKey, IntegrateGame.defExtSprite[playerKey])
+            Helper.CUSTOM_SPRITE_KIND_INITIALIZER[<number>playerKey] = (img:Image)=>{return new Player(img)}
         }
         Helper.setSprite(players, img, name, cb)
         IntegrateGame.defExtSprite[playerKey][name] = players.v[name]
@@ -322,7 +325,7 @@ namespace Player{
 
     //%block
     //%group="属性"
-    //%blockNamespace=玩家 
+    //%blockNamespace=玩家
     //%blockId=setPlayerAbility block="设置玩家 %p=variables_get(player) %aKind 为 %v"
     //%weight=81
     //%inlineInputMode=inline
@@ -340,7 +343,7 @@ namespace Player{
     }
     //%block
     //%group="属性"
-    //%blockNamespace=玩家 
+    //%blockNamespace=玩家
     //%blockId=setDeflWeapon block="设置玩家 %p=variables_get(player) 初始武器 为 %w"
     //%weight=80
     export function setDeflWeapon(p: Player, w: string){
@@ -399,7 +402,7 @@ namespace Player{
                 game.showLongText(weapon.name + "\n by "  + weapon.author + "\n\n" + weapon.desc, DialogLayout.Full)
                 seenWeapons.push(weapon.name)
             }
-            
+
             //未持有武器或装备池已满，直接装备武器
             if(player.curWeapon == null || player.spareWeapon.length >= player.maxWeapon){
                 player.oldWeapon = player.curWeapon
@@ -416,7 +419,7 @@ namespace Player{
                     }, 500)
                 }
                 equiWeapon(player, <Weapon.Weapon>otherSprite)
-            } else{ 
+            } else{
                 //放进装备池
                 pushWeapon(player, <Weapon.Weapon>otherSprite)
             }

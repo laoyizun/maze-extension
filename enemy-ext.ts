@@ -2,7 +2,7 @@
 namespace 敌人{}
 namespace Enemy{
 //================== 拓展敌人 ==================
-    export class Enemy extends Character.Character{   
+    export class Enemy extends Character.Character{
         skills: ((tempVar: Helper.tempVarDic, sprite: Sprite)=>void)[] //技能池
         move: number //移动标记
         followclock: number //跟随时钟
@@ -15,7 +15,13 @@ namespace Enemy{
         sid: string //唯一标记
         blastSkill: (tempVar: Helper.tempVarDic, sprite: Sprite)=>void //死亡技能
         spoils: ((tempVar: Helper.tempVarDic, sprite: Sprite)=>void)[] //击杀奖励
+
+        constructor(img:Image) {
+            super(img)
+        }
     }
+
+
 
     function reset(e: Enemy){
         Character.reset(e)
@@ -72,7 +78,7 @@ namespace Enemy{
 
     //%block
     //%group="自定义敌人"
-    //%blockNamespace=敌人 
+    //%blockNamespace=敌人
     //%blockId=setEnemy block="设置敌人 %img=screen_image_picker 命名为%name"
     //%weight=81
     //%inlineInputMode=inline
@@ -80,6 +86,7 @@ namespace Enemy{
     export function setEnemy(img: Image, name:string, cb:(enemy: Enemy)=>void){
         if(enemys == undefined){
             enemys = new Helper.mysprites(enemyKey, IntegrateGame.defExtSprite[enemyKey])
+            Helper.CUSTOM_SPRITE_KIND_INITIALIZER[<number>enemyKey] = (img:Image)=>{return new Enemy(img)}
         }
         Helper.setSprite(enemys, img, name, cb)
         IntegrateGame.defExtSprite[enemyKey][name] = enemys.v[name]
@@ -157,7 +164,7 @@ namespace Enemy{
         //% block="速度"
         speed
     }
-    
+
     //%block
     //%group="能力"
     //%blockNamespace=敌人
@@ -199,7 +206,7 @@ namespace Enemy{
 
     //%block
     //%group="参数"
-    //%blockNamespace=敌人 
+    //%blockNamespace=敌人
     //%blockId=enemyHp block="%b=variables_get(enemy)当前血量"
     //%weight=99
     export function enemyHp(b: Enemy){
@@ -208,7 +215,7 @@ namespace Enemy{
 
     //%block
     //%group="参数"
-    //%blockNamespace=敌人 
+    //%blockNamespace=敌人
     //%blockId=spriteToEnemy block="将精灵%b=variables_get(sprite)强制转换为敌人"
     //%weight=99
     export function spriteToEnemy(b: Sprite){

@@ -79,23 +79,26 @@ namespace myGame{
             e.destroy()
             return
         }
-        let moveto = (<Enemy.Enemy>e).moveto
-        if(moveto != undefined){
-            Enemy.stopMove(<Enemy.Enemy>e)
-        }
-        e.attack = 0
-        clearTimeout(e.hitrecclock)
-        e.hitrecclock = setTimeout(()=>{
-            e.hitrecclock = -1
-            e.hurted = 0
+        // enemy specific 
+        if (e instanceof Enemy.Enemy) {
+            let moveto = (<Enemy.Enemy>e).moveto
             if(moveto != undefined){
-                (<Enemy.Enemy>e).moveto = moveto
-                Enemy.enemyMoveTo(<Enemy.Enemy>e, moveto[0], moveto[1], moveto[2])
+                Enemy.stopMove(<Enemy.Enemy>e)
             }
-        }, time)
-        while(e.attachBullet.length > 0){
-            let b = e.attachBullet.removeAt(0)
-            b.destroy()
+            e.attack = 0
+            clearTimeout(e.hitrecclock)
+            e.hitrecclock = setTimeout(()=>{
+                e.hitrecclock = -1
+                e.hurted = 0
+                if(moveto != undefined){
+                    (<Enemy.Enemy>e).moveto = moveto
+                    Enemy.enemyMoveTo(<Enemy.Enemy>e, moveto[0], moveto[1], moveto[2])
+                }
+            }, time)
+            while(e.attachBullet.length > 0){
+                let b = e.attachBullet.removeAt(0)
+                b.destroy()
+            }
         }
     }
     //------------- 移动 -------------
