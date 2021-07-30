@@ -73,7 +73,7 @@ namespace Bullet{
         if(b.bulletoverlap != undefined){
             bullet.overlapAct = b.bulletoverlap
         }
-        let dir = (<Character.Character>p).dir
+        let dir = p instanceof Weapon.Weapon ? (<Weapon.Weapon>p).dir : (<Character.Character>p).dir
         a = (a+90*(dir == undefined ? 0 : dir)+90)/57.3
         bullet.changeImg = f
         bullet.setPosition(x+d*Math.cos(a), y+d*Math.sin(a))
