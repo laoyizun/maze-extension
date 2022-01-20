@@ -33,7 +33,7 @@ namespace Maze{
     }
 
     export let curMaze: maze = null
-    let mazes: maze[] = []
+    export let mazes: maze[] = []
 
     //%block
     //%blockNamespace=迷宫
